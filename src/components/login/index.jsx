@@ -63,7 +63,7 @@ const Login = () => {
             className={`w-full rounded-xl h-[50px] ${
               username && password ? "bg-[#6741D9]" : "bg-[#c2c2c2]"
             }`}
-            disabled={username && password}
+            
             type="submit"
           >
             Sign in
