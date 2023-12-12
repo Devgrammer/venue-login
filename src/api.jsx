@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-catch */
 
 import axios from "axios";
 
@@ -34,7 +35,7 @@ export const getAdminDetails = async (token, adminId) => {
 export const updatePrice = async (token, adminId, updatedAmounts) => {
   try {
     const response = await axios.put(
-      `${BASE_URL}/account/admin/${adminId}`,
+      `${BASE_URL}/${adminId}`,
       {
         amount: updatedAmounts,
       },

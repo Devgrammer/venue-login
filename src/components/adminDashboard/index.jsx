@@ -11,7 +11,7 @@ const AdminDashboard = () => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await getAdminDetails(token, adminId); 
+        const response = await getAdminDetails(token, adminId);
         setData(response.data);
         setCustomSongAmount(response.data.amount?.category_6 || 0);
         setRegularSongAmounts([
@@ -26,26 +26,27 @@ const AdminDashboard = () => {
       }
     }
     fetchData();
-  }, [token, adminId]);
+  }, [token,adminId]);
 
   
   const handleUpdatePrices = async () => {
     try {
       const updatedAmounts = {
-        category_6: parseInt(customSongAmount),
-        category_7: parseInt(regularSongAmounts[0]),
-        category_8: parseInt(regularSongAmounts[1]),
-        category_9: parseInt(regularSongAmounts[2]),
-        category_10: parseInt(regularSongAmounts[3]),
+      category_6: parseInt(customSongAmount),
+      category_7: parseInt(regularSongAmounts[0]),
+      category_8: parseInt(regularSongAmounts[1]),
+      category_9: parseInt(regularSongAmounts[2]),
+      category_10: parseInt(regularSongAmounts[3]),
       };
      
       await updatePrice(token, adminId, updatedAmounts); 
      
-      const updatedDetails = await getAdminDetails();
+      const updatedDetails = await getAdminDetails(token, adminId);
       setData(updatedDetails.data);
     } catch (error) {
       console.error("Error updating prices:", error);
     }
+    alert('Price updated successfully!')
   };
   const handleRadioChange = (e) => {
     setIsChargingCustomers(e.target.value === "true");
@@ -53,25 +54,30 @@ const AdminDashboard = () => {
    const canSave = regularSongAmounts.every(
      (amount, index) => amount > [79, 59, 39, 19][index]
      );
-     console.log("canSave: ", canSave);
+     console.log("canSave: ", regularSongAmounts);
    const barChartData = [
      {
        category: "Custom",
-       value: regularSongAmounts[0],
+       value: customSongAmount,
        color: "bg-violet-500",
      },
      {
        category: "Category 1",
-       value: regularSongAmounts[1],
+       value: regularSongAmounts[0],
        color: "bg-violet-500",
      },
      {
        category: "Category 2",
-       value: regularSongAmounts[2],
+       value: regularSongAmounts[1],
        color: "bg-violet-500",
      },
      {
        category: "Category 3",
+       value: regularSongAmounts[2],
+       color: "bg-violet-500",
+     },
+     {
+       category: "Category 4",
        value: regularSongAmounts[3],
        color: "bg-violet-500",
      },
@@ -161,14 +167,14 @@ const AdminDashboard = () => {
       
       {isChargingCustomers && (
         <div className="mt-8 h-[300px] relative border-2 border-t-0 border-r-0 px-4">
-          <div className="grid grid-cols-4 gap-4">
+          <div className="grid grid-cols-5 gap-4">
             {barChartData.map((bar) => {
-              const heit = bar.value / 10 + "px";
+              const heit = bar.value / 0.5 + "px";
 
               return (
                 <div key={bar.category} className=" flex flex-col gap-y-4">
                   <div
-                    className={` absolute bottom-10 ${heit} rounded-md text-center flex items-center justify-center font-semibold ${bar.color}`}
+                    className={` absolute bottom-10 ${heit}  h-max-[280px] rounded-md text-center flex items-center justify-center font-semibold ${bar.color}`}
                     style={{ width: "20px", height: heit }}
                   >
                     <span className="ml-2 mt-2 text-sm transform rotate-[-90deg] text-white font-semibold  mx-auto mr-2">
